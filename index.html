@@ -183,7 +183,7 @@ function card(v){
     <div class="body">
       <div class="name">${v.n}</div>
       <div class="agency">${v.ag} · ${v.area}</div>
-      <div class="price"><span class="mo">${money(v.mo)}</span><span class="per">/mo${v.nt?` · ~$${v.nt}/nt`:''}</span></div>
+      <div class="price"><span class="mo">${money(v.mo)}</span>${v.ag.indexOf('bali-home-immo')>-1?'<span style="font-size:11px;color:var(--warn);font-weight:700">est</span>':''}<span class="per">/mo${v.nt?` · ~$${v.nt}/nt`:''}</span></div>
       ${v.firm?`<div class="firm">${v.firm}</div>`:''}
       <div class="chips"><span class="chip">${v.bb}</span><span class="chip">🏊 Pool</span><span class="chip">📶 ${v.net}</span><span class="chip">🏖️ ${v.beach}</span><span class="chip">🏋️ ${v.gym}</span></div>
       <div class="avail">${v.avail}</div>
@@ -197,7 +197,7 @@ function trow(v){
   return `<tr class="${v.st==="out"?"out":""}">
     <td class="nm">${v.star?'<span class="star">★</span> ':''}${v.n}</td>
     <td>${v.ag}</td><td>${v.area}</td><td>${v.bb}</td>
-    <td class="mo">${money(v.mo)}</td><td>${v.nt?'$'+v.nt:'—'}${v.firm?'<div class="firm">'+v.firm.replace('Firm 20nt: ','20nt ')+'</div>':''}</td>
+    <td class="mo">${money(v.mo)}${v.ag.indexOf('bali-home-immo')>-1?' <span style="color:var(--warn);font-size:11px">est</span>':''}</td><td>${v.nt?'$'+v.nt:'—'}${v.firm?'<div class="firm">'+v.firm.replace('Firm 20nt: ','20nt ')+'</div>':''}</td>
     <td>🏊</td><td>${v.net}</td><td>${v.beach}</td><td>${v.gym}</td>
     <td>${v.avail}</td><td>${stTag(v.st)}</td>
     <td><a class="tl" href="${v.url}" target="_blank" rel="noopener">Open ↗</a></td></tr>`;
