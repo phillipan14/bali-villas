@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bali Villas — Shortlist</title>
+<style>
+  :root{--ink:#1a2433;--muted:#6b7888;--line:#e6eaf0;--accent:#1f7a8c;--good:#1c8b4b;--warn:#b9770a;--bad:#9aa3ad;--chip:#eef3f8}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;background:#f4f6f9;color:var(--ink);line-height:1.45}
+  header{background:linear-gradient(135deg,#0f1b2d,#1f3a5f);color:#fff;padding:30px 22px 24px}
+  header h1{font-size:27px;font-weight:800;letter-spacing:-.4px}
+  header p{color:#b7c6da;margin-top:6px;font-size:14px;max-width:760px}
+  .wrap{max-width:1200px;margin:0 auto;padding:18px 22px 70px}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:18px 0 6px;position:sticky;top:0;background:#f4f6f9;padding:10px 0;z-index:5}
+  .grp{display:flex;gap:6px;flex-wrap:wrap}
+  button.f{border:1px solid var(--line);background:#fff;color:var(--ink);padding:7px 13px;border-radius:999px;font-size:13px;cursor:pointer;transition:.15s}
+  button.f:hover{border-color:var(--accent)}
+  button.f.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .spacer{flex:1}
+  select{border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px;background:#fff;color:var(--ink)}
+  .count{color:var(--muted);font-size:13px;margin:4px 2px 14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(20,30,50,.05);transition:.15s}
+  .card:hover{box-shadow:0 10px 28px rgba(20,30,50,.13);transform:translateY(-2px)}
+  .card.out{opacity:.6;filter:grayscale(.45)}
+  .photo{height:188px;background-size:cover;background-position:center;position:relative;display:flex;align-items:center;justify-content:center}
+  .photo.ph{color:#fff;font-size:13px;font-weight:600;text-shadow:0 1px 4px rgba(0,0,0,.3)}
+  .ph.Berawa,.ph.Canggu{background:linear-gradient(135deg,#2a9d8f,#1f7a8c)}
+  .ph.Pererenan{background:linear-gradient(135deg,#457b9d,#2a5a78)}
+  .ph.Umalas,.ph.Seseh,.ph.Cemagi{background:linear-gradient(135deg,#5a8f7b,#3a6b57)}
+  .ph.Uluwatu,.ph.TBD{background:linear-gradient(135deg,#6d6875,#4a4458)}
+  .badge{position:absolute;top:10px;right:10px;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;backdrop-filter:blur(4px)}
+  .b-replied{background:rgba(28,139,75,.92);color:#fff}
+  .b-pending{background:rgba(185,119,10,.92);color:#fff}
+  .b-out{background:rgba(120,128,138,.92);color:#fff}
+  .body{padding:15px 16px 16px;display:flex;flex-direction:column;flex:1}
+  .name{font-size:18px;font-weight:700;letter-spacing:-.2px}
+  .star{color:#e8a13a}
+  .agency{color:var(--muted);font-size:12.5px;margin-top:2px}
+  .price{margin:12px 0 2px;display:flex;align-items:baseline;gap:8px}
+  .price .mo{font-size:23px;font-weight:800;letter-spacing:-.5px}
+  .price .per{color:var(--muted);font-size:13px}
+  .firm{font-size:12px;color:var(--accent);font-weight:600;margin:2px 0 2px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px}
+  .chip{background:var(--chip);border-radius:7px;padding:4px 9px;font-size:12px;color:#42505f}
+  .avail{font-size:12.5px;margin-top:9px;color:#42505f;flex:1}
+  .linkrow{margin-top:12px;font-size:11.5px}
+  .linkrow a{color:var(--accent);word-break:break-all;text-decoration:none}
+  .cta{margin-top:10px}
+  a.view{display:block;text-align:center;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:11px;border-radius:9px;transition:.15s}
+  a.view:hover{background:#16606f}
+  .sec{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:30px 2px 10px;border-top:1px solid var(--line);padding-top:18px}
+  footer{color:var(--muted);font-size:12px;text-align:center;padding:34px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏝️ Bali Villas — Shortlist</h1>
+  <p>3BR · private pool · ~3 weeks (dates TBC). Every card has a <b>View Listing</b> button + the link shown below it. Monthly est in USD (~16,000 IDR/$); per-night = mo÷30. ★ = top picks.</p>
+</header>
+<div class="wrap">
+  <div class="controls">
+    <div class="grp" id="areaFilters"></div>
+    <span class="spacer"></span>
+    <select id="sort">
+      <option value="price">Price (low→high)</option>
+      <option value="priceD">Price (high→low)</option>
+      <option value="name">Name (A→Z)</option>
+    </select>
+  </div>
+  <div class="count" id="count"></div>
+  <div class="grid" id="grid"></div>
+  <div class="sec">Ruled out</div>
+  <div class="grid" id="gridOut"></div>
+</div>
+<footer>Built from WhatsApp + email replies · firm quotes noted where given · photos from listings where available</footer>
+<script>
+const V=[
+ {n:"RF9581",star:1,ag:"bali-home-immo",area:"Berawa",bb:"3 / 3",mo:2450,nt:82,net:"Fiber",beach:"5 min beach",gym:"gym/pickle 3–12 min",avail:"Available — firm quote pending Mon",st:"replied",url:"https://bali-home-immo.com/realestate-property/for-rent/villa/monthly/canggu/3-bedroom-villa-for-rent-in-canggu-berawa-rf9581"},
+ {n:"RF9489",ag:"bali-home-immo",area:"Berawa",bb:"3 / 3",mo:2950,nt:98,net:"Fiber",beach:"5 min beach",gym:"3–12 min",avail:"Available — firm quote pending",st:"replied",url:"https://bali-home-immo.com/realestate-property/for-rent/villa/monthly/canggu/3-bedroom-family-villa-for-rent-in-canggu-berawa-rf9489"},
+ {n:"RF30",ag:"bali-home-immo",area:"Berawa",bb:"3 / 3",mo:2800,nt:93,net:"Fiber",beach:"5 min beach",gym:"3–12 min",avail:"Available — firm quote pending",st:"replied",url:"https://bali-home-immo.com/realestate-property/for-rent/villa/monthly/canggu/3-bedroom-villa-for-monthly-rental-in-berawa-rf30"},
+ {n:"RF8852",ag:"bali-home-immo",area:"Berawa",bb:"3 / 3",mo:3900,nt:130,net:"Fiber unltd",beach:"5 min beach",gym:"3–12 min",avail:"Available — firm quote pending",st:"replied",url:"https://bali-home-immo.com/realestate-property/for-rent/villa/monthly/canggu/3-bedroom-villa-for-rent-in-canggu-berawa-rf8852"},
+ {n:"RF8695",ag:"bali-home-immo",area:"Umalas",bb:"3 / 3",mo:3900,nt:130,net:"Fiber",beach:"Umalas (central)",gym:"3–12 min",avail:"Available — firm quote pending",st:"replied",url:"https://bali-home-immo.com/realestate-property/for-rent/villa/monthly/umalas/brand-new-3-bedroom-villa-for-rent-in-umalas-rf8695"},
+ {n:"RF8855",ag:"bali-home-immo",area:"Berawa",bb:"3 / 3",mo:4200,nt:140,net:"Fiber",beach:"800m walk",gym:"3–12 min",avail:"Available — firm quote pending",st:"replied",url:"https://bali-home-immo.com/realestate-property/for-rent/villa/monthly/canggu/3-bedroom-villa-for-sale-and-rent-in-canggu-berawa-rf8855"},
+ {n:"Nava Tamora",star:1,ag:"Betterplace (hombali)",area:"Canggu",bb:"3 BR",mo:3690,nt:123,net:"Wifi incl",beach:"Canggu · paddy view",gym:"3–12 min",firm:"Firm 20nt: $3,628 all-in ($181/nt)",avail:"Quoted Jul 13–Aug 2 · incl elec + daily clean",st:"replied",url:"https://kommo.cc/K/X1ZS26/WXYGV8"},
+ {n:"Obak B3",ag:"Betterplace (hombali)",area:"Cemagi",bb:"3 BR",mo:3310,nt:110,net:"Wifi incl",beach:"Cemagi · near beach",gym:"10–20 min",firm:"Firm 20nt: $2,505 all-in ($125/nt)",avail:"Quoted Jul 13–Aug 2 · incl elec + daily clean",st:"replied",url:"https://kommo.cc/K/X1ZS28/WXYGVA"},
+ {n:"D'Pavillion A5",ag:"Betterplace (hombali)",area:"Seseh",bb:"3 BR",mo:2500,nt:83,net:"Wifi incl",beach:"Seseh (out)",gym:"15–20 min",firm:"Firm 20nt: $2,120 all-in ($106/nt)",avail:"Quoted Jul 13–Aug 2 · incl elec + daily clean",st:"replied",url:"https://kommo.cc/K/X1ZS24/WXYGV6"},
+ {n:"Sandwave",ag:"Betterplace (hombali)",area:"Uluwatu",bb:"3 BR",mo:2690,nt:90,net:"Wifi incl",beach:"Uluwatu (far)",gym:"far",firm:"Firm 20nt: $2,138 all-in ($107/nt)",avail:"Quoted Jul 13–Aug 2 · incl elec + daily clean",st:"replied",url:"https://kommo.cc/K/X1ZS2A/WXYGVC"},
+ {n:"Rooftop villa",star:1,ag:"Kibarer (Sari)",area:"Pererenan",bb:"3 / 4",mo:3125,nt:104,net:"Wifi",beach:"Pererenan · 5 min beach",gym:"5–10 min",avail:"Offered — can arrange a visit",st:"replied",img:"https://www.villabalisale.com/uploads/images/property/2025-09-30-property-68db923b1798f.webp",url:"https://www.villabalisale.com/realestate-property/for-rent/villa/monthly/pererenan/stunning-three-bedroom-villa-with-rooftop-in-pererenan-yrr3664"},
+ {n:"Mediterranean (new)",ag:"Kibarer (Sari)",area:"Pererenan",bb:"3 / 3",mo:2810,nt:94,net:"Wifi",beach:"Pererenan · 9 min beach",gym:"5–10 min",avail:"Offered — can arrange a visit",st:"replied",img:"https://www.villabalisale.com/uploads/images/property/2023-09-12-property-6500001870b05.jpg",url:"https://www.villabalisale.com/realestate-property/for-rent/villa/monthly/pererenan/brand-new-mediterranean-three-bedroom-enclosed-living-room-villa-set-in-pererenan"},
+ {n:"Heart of Pererenan",ag:"Kibarer (Sari)",area:"Pererenan",bb:"3 / 3",mo:2810,nt:94,net:"Wifi",beach:"Pererenan",gym:"5–10 min",avail:"Offered — can arrange a visit",st:"replied",img:"https://www.villabalisale.com/uploads/images/property/2026-04-24-property-69eb08396fc4d.webp",url:"https://www.villabalisale.com/realestate-property/for-rent/villa/monthly/pererenan/three-bedroom-villa-in-the-heart-of-pererenan-yrj6421"},
+ {n:"Villa Khana",ag:"Short Stay Bali",area:"Berawa",bb:"3 / 3",mo:4700,nt:157,net:"Yes",beach:"Berawa / Batu Mejan",gym:"3–12 min",avail:"Available · serviced",st:"replied",img:"https://shortstaybali.com/wp-content/uploads/2025/05/Villa-Khana-3-Bedrooms-Private-Villa-in-Heart-of-Canggu-6.jpg",url:"https://shortstaybali.com/listing-villas/canggu-villa-rental-villa-khana/"},
+ {n:"Villa Theo",ag:"Bali Villa Hub",area:"TBD",bb:"3 BR",mo:4375,nt:146,net:"Verify",beach:"Verify location",gym:"Verify",avail:"Available from Jul 6 · excl elec · photos in link",st:"replied",url:"https://drive.google.com/drive/folders/1tlejzz5QNFvVbgmuTg-Ov4U5JqxzJ-kL"},
+ {n:"Joglo villa",ag:"Kibarer / villabalisale",area:"Pererenan",bb:"3 / 3",mo:2190,nt:73,net:"Verify",beach:"Pererenan",gym:"5–10 min",avail:"Available via Sari",st:"pending",img:"https://www.villabalisale.com/uploads/images/property/2020-08-11-property-5f32486761ba0.jpg",url:"https://www.villabalisale.com/realestate-property/for-rent/villa/monthly/pererenan/three-bedroom-authentic-joglo-wooden-villa-in-pererenan"},
+ {n:"Pererenan full-svc",ag:"balivillahub (Christy)",area:"Pererenan",bb:"3 BR",mo:2800,nt:93,net:"Yes",beach:"Pererenan",gym:"5–10 min",avail:"Verify (date may be stale)",st:"pending",img:"https://d2m45uogmhoov.cloudfront.net/1739498904636-IMG-20250108-WA0024-1920.webp",url:"https://www.balivillahub.com/en/property-details/pererenan/3-bedroom-villa-full-services-included-1215"},
+ {n:"Modern 3BR (Clarity)",ag:"Bali Listings",area:"Canggu",bb:"3 / 3",mo:2375,nt:79,net:"Incl",beach:"Canggu",gym:"3–12 min",avail:"Awaiting reply",st:"pending",url:"https://balilistings.com/l/6a02b345-f37c-4db8-99e2-f8512fb9cdb2"},
+ {n:"Villa Crusoe",ag:"Bali Villa Escapes",area:"Canggu",bb:"3 BR",mo:3360,nt:112,net:"Fast",beach:"mins",gym:"3–12 min",avail:"Awaiting reply",st:"pending",img:"https://balivillaescapes.com.au/wp-content/uploads/2025/09/VillaCrusoe-exterior-IMG_7784-HDR.jpg",url:"https://balivillaescapes.com.au/?villas=villa-crusoe-canggu-3br-best-price-2025"},
+ {n:"Mr & Mrs W",ag:"Alfred in Bali",area:"Berawa",bb:"3 BR",mo:0,nt:0,net:"Yes",beach:"Berawa",gym:"3–12 min",avail:"Price TBD · awaiting reply",st:"pending",url:"https://www.alfredinbali.com/property/villa-rental-in-berawa-mr-mrs-w-canggu/"},
+ {n:"Berawa alt (Bellavera)",ag:"Bali Luxury Mgmt",area:"Berawa",bb:"3 / 3",mo:0,nt:0,net:"Yes",beach:"Berawa",gym:"3–12 min",avail:"Price TBD · asked July alt",st:"pending",url:"https://www.balivillahub.com/en/property-details/canggu/luxury-villa-in-berawa-beach-3br-villa-bellavera-6517"},
+ {n:"Villa Libertas",ag:"Short Stay Bali",area:"Canggu",bb:"3 BR",mo:6875,nt:229,net:"Yes",beach:"Canggu",gym:"3–12 min",avail:"OVER BUDGET",st:"out",url:"https://youtu.be/ADIj_gKlGxs"},
+ {n:"Villa Samata",ag:"Short Stay Bali",area:"Berawa",bb:"3 / 3",mo:0,nt:0,net:"Fast",beach:"3 min",gym:"3–12 min",avail:"BOOKED",st:"out",url:"https://shortstaybali.com/listing-villas/canggu-3-bedroom-villa-with-pool-near-berawa/"},
+ {n:"AF400",ag:"balivillahub",area:"Berawa",bb:"3 / 4",mo:5440,nt:181,net:"Hi-speed",beach:"1.2km",gym:"3–12 min",avail:"RENTED",st:"out",img:"https://d2m45uogmhoov.cloudfront.net/1734601001634-AF233-ALAM%2520DEWATA%2520ESTATE-PROPERTY%2520AGENT%2520IN%2520BALI%2520(4)-1920.webp",url:"https://www.balivillahub.com/en/property-details/canggu/3-bedroom-brand-new-luxury-villa-berawa-canggu-855"},
+];
+const areas=["All",...Array.from(new Set(V.filter(v=>v.st!=="out").map(v=>v.area)))];
+let curArea="All",curSort="price";
+const fEl=document.getElementById("areaFilters");
+areas.forEach(a=>{const b=document.createElement("button");b.className="f"+(a==="All"?" on":"");b.textContent=a;b.onclick=()=>{curArea=a;[...fEl.children].forEach(c=>c.classList.remove("on"));b.classList.add("on");render()};fEl.appendChild(b)});
+document.getElementById("sort").onchange=e=>{curSort=e.target.value;render()};
+const money=v=>v?("$"+v.toLocaleString()):"TBD";
+const host=u=>{try{return new URL(u).hostname.replace("www.","")}catch(e){return u}};
+function photo(v){
+  const badge=v.st==="replied"?'<span class="badge b-replied">Replied</span>':v.st==="pending"?'<span class="badge b-pending">Awaiting</span>':'<span class="badge b-out">Out</span>';
+  if(v.img)return `<div class="photo" style="background-image:url('${v.img}')">${badge}</div>`;
+  return `<div class="photo ph ${v.area}">📷 Photos on listing${badge}</div>`;
+}
+function card(v){
+  return `<div class="card ${v.st==="out"?"out":""}">
+    ${photo(v)}
+    <div class="body">
+      <div class="name">${v.star?'<span class="star">★</span> ':''}${v.n}</div>
+      <div class="agency">${v.ag} · ${v.area}</div>
+      <div class="price"><span class="mo">${money(v.mo)}</span><span class="per">/mo${v.nt?` · ~$${v.nt}/nt`:''}</span></div>
+      ${v.firm?`<div class="firm">${v.firm}</div>`:''}
+      <div class="chips"><span class="chip">${v.bb}</span><span class="chip">🏊 Pool</span><span class="chip">📶 ${v.net}</span><span class="chip">🏖️ ${v.beach}</span><span class="chip">🏋️ ${v.gym}</span></div>
+      <div class="avail">${v.avail}</div>
+      <div class="cta"><a class="view" href="${v.url}" target="_blank" rel="noopener">View Listing →</a></div>
+      <div class="linkrow"><a href="${v.url}" target="_blank" rel="noopener">${host(v.url)}↗</a></div>
+    </div>
+  </div>`;
+}
+function render(){
+  const live=V.filter(v=>v.st!=="out").filter(v=>curArea==="All"||v.area===curArea);
+  const sorted=[...live].sort((a,b)=>{if(curSort==="name")return a.n.localeCompare(b.n);const av=a.mo||9e9,bv=b.mo||9e9;return curSort==="priceD"?bv-av:av-bv});
+  document.getElementById("grid").innerHTML=sorted.map(card).join("");
+  document.getElementById("gridOut").innerHTML=V.filter(v=>v.st==="out").map(card).join("");
+  document.getElementById("count").textContent=`${sorted.length} villa${sorted.length!==1?"s":""}${curArea!=="All"?" in "+curArea:""} · ${V.filter(v=>v.st==="out").length} ruled out`;
+}
+render();
+</script>
+</body>
+</html>
