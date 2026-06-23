@@ -86,6 +86,17 @@
   .tbl .grp-rep{color:var(--good);font-weight:700}.tbl .grp-pen{color:var(--warn);font-weight:700}.tbl .grp-out{color:var(--bad);font-weight:700}
   .tbl a.tl{color:#fff;background:var(--accent);padding:6px 12px;border-radius:7px;font-weight:700;text-decoration:none;white-space:nowrap;font-size:12px}
   .tbl a.tl:hover{background:#0b5d56}
+  .tbl tr.liked td{background:#e3f7ec !important}
+  .tact{border:1px solid var(--line);background:#fff;border-radius:6px;padding:4px 9px;cursor:pointer;font-size:14px;line-height:1}
+  .tact:hover{border-color:var(--accent)}
+  .tact.like.on{background:var(--good);color:#fff;border-color:var(--good)}
+  .acts{display:flex;gap:6px;margin-top:9px}
+  .act{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px;font-size:13px;cursor:pointer;font-weight:700;color:var(--muted);transition:.15s}
+  .act:hover{border-color:var(--accent);color:var(--accent)}
+  .card.liked{outline:2px solid var(--good);outline-offset:-2px}
+  .card.liked .act.like{background:var(--good);color:#fff;border-color:var(--good)}
+  .card.passed{opacity:.42;filter:grayscale(.85)}
+  .card.passed .act.pass{background:#c0392b;color:#fff;border-color:#c0392b}
   footer{color:var(--soft);font-size:12px;text-align:center;padding:36px}
   @media(max-width:560px){header h1{font-size:24px}.stats{gap:18px}.price .mo{font-size:22px}}
 </style>
@@ -157,6 +168,9 @@ const V=[
  {n:"Villa Samata",ag:"Short Stay Bali",area:"Berawa",bb:"3 / 3",mo:0,nt:0,net:"Fast",beach:"3 min",gym:"3–12 min",avail:"BOOKED",st:"out",url:"https://shortstaybali.com/listing-villas/canggu-3-bedroom-villa-with-pool-near-berawa/"},
  {n:"AF400",ag:"balivillahub",area:"Berawa",bb:"3 / 4",mo:5440,nt:181,net:"Hi-speed",beach:"1.2km",gym:"3–12 min",avail:"RENTED",st:"out",img:"https://d2m45uogmhoov.cloudfront.net/1734601001634-AF233-ALAM%2520DEWATA%2520ESTATE-PROPERTY%2520AGENT%2520IN%2520BALI%2520(4)-1920.webp",url:"https://www.balivillahub.com/en/property-details/canggu/3-bedroom-brand-new-luxury-villa-berawa-canggu-855"},
 ];
+V.forEach((v,i)=>v.id=i);
+let marks=JSON.parse(localStorage.getItem('villaMarks')||'{}');
+function setMark(id,act){marks[id]=(marks[id]===act)?null:act; if(!marks[id])delete marks[id]; localStorage.setItem('villaMarks',JSON.stringify(marks)); render();}
 const areas=["All",...Array.from(new Set(V.filter(v=>v.st!=="out").map(v=>v.area)))];
 let curArea="All",curSort="price",curView="cards";
 const fEl=document.getElementById("areaFilters");
@@ -183,7 +197,7 @@ function photo(v){
   return `<div class="photo ph ${v.area}">${rib}📷 Photos on listing${badge}</div>`;
 }
 function card(v){
-  return `<div class="card ${v.st==="out"?"out":""}">
+  return `<div class="card ${v.st==="out"?"out":""} ${marks[v.id]==='like'?'liked':''}">
     ${photo(v)}
     <div class="body">
       <div class="name">${v.n}</div>
@@ -193,13 +207,15 @@ function card(v){
       <div class="chips"><span class="chip">${v.bb}</span><span class="chip">🏊 Pool</span><span class="chip">📶 ${v.net}</span><span class="chip">🏖️ ${v.beach}</span><span class="chip">🏋️ ${v.gym}</span></div>
       <div class="avail">${v.avail}</div>
       <div class="cta"><a class="view" href="${v.url}" target="_blank" rel="noopener">View Listing →</a></div>
+      <div class="acts"><button class="act like" onclick="setMark(${v.id},'like')">${marks[v.id]==='like'?'♥ Liked':'♡ Like'}</button><button class="act pass" onclick="setMark(${v.id},'pass')">✕ Pass</button></div>
       <div class="linkrow"><a href="${v.url}" target="_blank" rel="noopener">${host(v.url)} ↗</a></div>
     </div>
   </div>`;
 }
 const stTag=s=>s==="replied"?'<span class="grp-rep">● Replied</span>':s==="pending"?'<span class="grp-pen">● Awaiting</span>':'<span class="grp-out">● Out</span>';
 function trow(v){
-  return `<tr class="${v.st==="out"?"out":""}">
+  return `<tr class="${v.st==="out"?"out":""} ${marks[v.id]==='like'?'liked':''}">
+    <td style="white-space:nowrap"><button class="tact like ${marks[v.id]==='like'?'on':''}" onclick="setMark(${v.id},'like')">♥</button> <button class="tact pass" onclick="setMark(${v.id},'pass')">✕</button></td>
     <td class="nm">${v.star?'<span class="star">★</span> ':''}${v.n}</td>
     <td>${v.ag}</td><td>${v.area}</td><td>${v.bb}</td>
     <td class="mo">${money(v.mo)}${v.ag.indexOf('bali-home-immo')>-1?' <span style="color:var(--warn);font-size:11px">est</span>':''}</td><td>${v.nt?'$'+v.nt:'—'}${v.firm?'<div class="firm">'+v.firm.replace('Firm 20nt: ','20nt ')+'</div>':''}</td>
@@ -208,18 +224,20 @@ function trow(v){
     <td><a class="tl" href="${v.url}" target="_blank" rel="noopener">Open ↗</a></td></tr>`;
 }
 function renderTable(sorted){
-  const out=V.filter(v=>v.st==="out");
+  const out=V.filter(v=>v.st==="out" && marks[v.id]!=='pass');
   document.getElementById("tbl").innerHTML=
-    `<thead><tr><th>Villa</th><th>Agency</th><th>Area</th><th>Beds/Baths</th><th>$/month</th><th>$/night</th><th>Pool</th><th>Internet</th><th>Beach</th><th>Gym/Pickle</th><th>Availability</th><th>Status</th><th>Link</th></tr></thead>`+
+    `<thead><tr><th>Pick</th><th>Villa</th><th>Agency</th><th>Area</th><th>Beds/Baths</th><th>$/month</th><th>$/night</th><th>Pool</th><th>Internet</th><th>Beach</th><th>Gym/Pickle</th><th>Availability</th><th>Status</th><th>Link</th></tr></thead>`+
     `<tbody>${sorted.map(trow).join("")}${out.map(trow).join("")}</tbody>`;
 }
+function resetMarks(){marks={};localStorage.removeItem('villaMarks');render();}
 function render(){
-  const live=V.filter(v=>v.st!=="out").filter(v=>curArea==="All"||v.area===curArea);
-  const sorted=[...live].sort((a,b)=>{if(curSort==="name")return a.n.localeCompare(b.n);const av=a.mo||9e9,bv=b.mo||9e9;return curSort==="priceD"?bv-av:av-bv});
+  const live=V.filter(v=>v.st!=="out").filter(v=>curArea==="All"||v.area===curArea).filter(v=>marks[v.id]!=='pass');
+  const sorted=[...live].sort((a,b)=>{const la=marks[a.id]==='like',lb=marks[b.id]==='like';if(la!==lb)return la?-1:1;if(curSort==="name")return a.n.localeCompare(b.n);const av=a.mo||9e9,bv=b.mo||9e9;return curSort==="priceD"?bv-av:av-bv});
   document.getElementById("grid").innerHTML=sorted.map(card).join("");
-  document.getElementById("gridOut").innerHTML=V.filter(v=>v.st==="out").map(card).join("");
+  document.getElementById("gridOut").innerHTML=V.filter(v=>v.st==="out"&&marks[v.id]!=='pass').map(card).join("");
   renderTable(sorted);
-  document.getElementById("count").textContent=`Showing ${sorted.length} villa${sorted.length!==1?"s":""}${curArea!=="All"?" in "+curArea:""} · ${V.filter(v=>v.st==="out").length} ruled out`;
+  const liked=Object.values(marks).filter(x=>x==='like').length, passed=Object.values(marks).filter(x=>x==='pass').length;
+  document.getElementById("count").innerHTML=`Showing ${sorted.length}${curArea!=="All"?" in "+curArea:""} · ❤️ ${liked} liked · ✕ ${passed} passed (hidden)`+(passed||liked?` · <a href="#" onclick="resetMarks();return false" style="color:var(--accent);font-weight:600">reset</a>`:'');
 }
 render();
 </script>
